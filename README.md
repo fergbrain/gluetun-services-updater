@@ -1,6 +1,6 @@
 # qbt-updater-for-gluetun
 
-qBittorrent port updater for gluetun.
+Updater for services that use gluetun, such as qBittorrent and myAnonymouse.
 
 ## Running directly
 
@@ -25,8 +25,8 @@ python app/main.py
 ---
 services:
   qbt-updater:
-    build: https://github.com/AnonymousX86/qbt-updater-for-gluetun.git#v1.1
-    container_name: qbt-updater
+    build: https://github.com/fergbrain/gluetun-services-updater
+    container_name: gluetun-updater
     restart: unless-stopped
     environment:
       # Assuming apps expose ports on gateway of "custom-network"
@@ -35,6 +35,8 @@ services:
       QBITTORRENT_URL: http://172.18.0.1:8080
     env_file:
       - .env # Contains QBITTORRENT_PASSWORD
+    volumes:
+      - ./data:/data  # Mount the data directory to persist cookies
     networks:
       - custom-network # Must be the same as gluetun and qBittorrent
 

@@ -9,6 +9,8 @@ from qbittorrent import login_to_qbittorrent, update_qbittorrent_port, \
 from settings import settings
 from utils import sep
 
+from myanonamouse import update_mam_session_cookie
+
 
 def main():
     # gluetun
@@ -52,6 +54,18 @@ def main():
         raise e
     finally:
         s.close()
+
+    # myAnonamouse
+    try:
+        # Periodically check and update the session key
+        session_updated = update_mam_session_cookie()
+        if session_updated:
+            print("Session cookie is up-to-date.")
+        else:
+            print("Session cookie update failed. Please verify the session cookie.")
+
+    except Exception as e:
+        raise e
 
     sep('Done')
     print(f'Next run in {settings.timeout} seconds...')
