@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+# SPDX-FileCopyrightText: Copyright (c) 2024 Jakub Suchenek
+# SPDX-FileCopyrightText: Copyright (c) 2024 Andrew Ferguson
+#
+# SPDX-License-Identifier: MIT
 import requests
 def sep(text: str, *, n: int = 4, char: str = '*') -> None:
     print('\n{0} {1} {0}'.format(n * char, text))

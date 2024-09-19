@@ -25,7 +25,7 @@ python app/main.py
 ---
 services:
   qbt-updater:
-    build: https://github.com/fergbrain/gluetun-services-updater
+    build: https://github.com/fergbrain/gluetun-services-updater.git#main
     container_name: gluetun-updater
     restart: unless-stopped
     environment:

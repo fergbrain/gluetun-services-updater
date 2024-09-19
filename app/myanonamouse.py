@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: Copyright (c) 2024 Andrew Ferguson
+#
+# SPDX-License-Identifier: MIT
+
 import requests
 import os
 from utils import log_ip_address

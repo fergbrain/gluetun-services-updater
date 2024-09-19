@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+# SPDX-FileCopyrightText: Copyright (c) 2024 Jakub Suchenek
+# SPDX-FileCopyrightText: Copyright (c) 2024 Andrew Ferguson
+#
+# SPDX-License-Identifier: MIT
 from requests import Session
 
 from time import sleep
