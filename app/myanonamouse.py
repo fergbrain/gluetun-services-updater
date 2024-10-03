@@ -17,10 +17,11 @@ def get_session_cookie_from_file():
         return f.read().strip()  # Return cookie as a string (e.g., 'mam_id=SESSION_KEY')
 
 
-def save_session_cookie_to_file(cookie):
-    """Save the session cookie to the file."""
+def save_session_cookie_to_file(cookie_jar):
+    """Save the session cookies to the file."""
     with open(SESSION_COOKIE_FILE, "w") as f:
-        f.write(cookie)
+        for cookie in cookie_jar:
+            f.write(f"{cookie.name}={cookie.value}\n")
 
 
 def update_mam_session_cookie():
@@ -39,10 +40,10 @@ def update_mam_session_cookie():
             "https://t.myanonamouse.net/json/dynamicSeedbox.php",
             cookies={cookie_key: cookie_value}
         )
+
         if response.status_code == 200:
-            # Save the response cookie to a file (if needed)
-            with open("/data/mam.cookies", "w") as f:
-                f.write(response.text)
+            # Save the updated cookies to the file
+            save_session_cookie_to_file(response.cookies)
             print("Session cookie updated successfully.")
             return True
         else:
@@ -51,4 +52,3 @@ def update_mam_session_cookie():
     except Exception as e:
         print(f"Error while updating session cookie: {str(e)}")
         return False
-
