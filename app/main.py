@@ -61,6 +61,7 @@ def main():
 
     # myAnonamouse
     try:
+        sep('myAnonamouse')
         # Periodically check and update the session key
         session_updated = update_mam_session_cookie()
         if session_updated:
