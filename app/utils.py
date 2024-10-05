@@ -4,6 +4,10 @@
 #
 # SPDX-License-Identifier: MIT
 import requests
+
+from settings import settings
+
+
 def sep(text: str, *, n: int = 4, char: str = '*') -> None:
     print('\n{0} {1} {0}'.format(n * char, text))
 
@@ -17,3 +21,9 @@ def log_ip_address():
             print(f"Failed to get IP address: {response.status_code}")
     except Exception as e:
         print(f"Error while logging IP address: {str(e)}")
+
+
+def write_health_status(status):
+    """Write the container's health status to a file."""
+    with open(settings.healthstatusfile, "w") as f:
+        f.write(status)

@@ -4,17 +4,20 @@
 
 import requests
 import os
-from utils import log_ip_address
+from utils import log_ip_address, write_health_status
 
 SESSION_COOKIE_FILE = "/data/mam.cookies"  # File location to store the session key
 
 
 def get_session_cookie_from_file():
-    """Read the session cookie from the file."""
+    """Read only the mam_id cookie from the file."""
     if not os.path.exists(SESSION_COOKIE_FILE):
         return None
     with open(SESSION_COOKIE_FILE, "r") as f:
-        return f.read().strip()  # Return cookie as a string (e.g., 'mam_id=SESSION_KEY')
+        for line in f:
+            if line.startswith("mam_id="):
+                return line.strip()  # Return only the mam_id cookie (e.g., 'mam_id=SESSION_KEY')
+    return None  # Return None if no mam_id cookie is found
 
 
 def save_session_cookie_to_file(cookie_jar):
@@ -24,7 +27,7 @@ def save_session_cookie_to_file(cookie_jar):
             f.write(f"{cookie.name}={cookie.value}\n")
 
 
-def update_mam_session_cookie():
+def update_mam_session_cookie() -> bool:
     session_cookie = get_session_cookie_from_file()
     if not session_cookie:
         print("No session cookie found. Logging IP address.")
@@ -42,9 +45,18 @@ def update_mam_session_cookie():
         )
 
         if response.status_code == 200:
-            # Save the updated cookies to the file
-            save_session_cookie_to_file(response.cookies)
-            print("Session cookie updated successfully.")
+            # Filter for only the 'mam_id' cookie
+            mam_id_cookie = None
+            for cookie in response.cookies:
+                if cookie.name == 'mam_id':
+                    mam_id_cookie = cookie
+
+            if mam_id_cookie:
+                # Save only the 'mam_id' cookie to the file
+                save_session_cookie_to_file([mam_id_cookie])
+                print("mam_id cookie updated successfully.")
+            else:
+                print("mam_id cookie not found in the response.")
             return True
         else:
             print(f"Failed to update session cookie: {response.status_code}")

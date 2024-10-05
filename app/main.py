@@ -11,7 +11,7 @@ from gluetun import is_gluetun_ready, get_assigned_port
 from qbittorrent import login_to_qbittorrent, update_qbittorrent_port, \
     verify_qbittorrent_port
 from settings import settings
-from utils import sep
+from utils import sep, write_health_status
 
 from myanonamouse import update_mam_session_cookie
 
@@ -66,8 +66,11 @@ def main():
         session_updated = update_mam_session_cookie()
         if session_updated:
             print("Session cookie is up-to-date.")
+            write_health_status("healthy")  # Mark as healthy if successful
         else:
             print("Session cookie update failed. Please verify the session cookie.")
+            write_health_status("unhealthy")  # Mark as unhealthy on exception
+
 
     except Exception as e:
         raise e

@@ -19,6 +19,7 @@ class Settings:
         self.gluetun = GluetunSettings()
         self.qbittorrent = QbittorrentSettings()
         self.timeout = float(getenv('TIMEOUT', '3600'))
+        self.healthstatusfile = getenv('HEALTH_STATUS_FILE', '/data/health_status.txt')
 
     @property
     def default_headers(self) -> dict:

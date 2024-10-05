@@ -39,6 +39,13 @@ services:
       - ./data:/data  # Mount the data directory to persist cookies
     networks:
       - custom-network # Must be the same as gluetun and qBittorrent
+    healthcheck:
+      test: ["CMD", "cat", "/data/health_status.txt", "|", "grep", "'healthy'"]
+      interval: 5m  # How often to run the check
+      timeout: 30s  # Timeout before assuming the script failed
+      retries: 3  # Number of retries before marking the container as unhealthy
+      start_period: 30s  # Initial delay before starting health checks
+
 
 networks:
   custom-network:
