@@ -30,7 +30,7 @@ def save_session_cookie_to_file(cookie_jar):
 def update_mam_session_cookie() -> bool:
     session_cookie = get_session_cookie_from_file()
     if not session_cookie:
-        print("No session cookie found. Logging IP address.")
+        print("[myAnonamouse] No session cookie found. Logging IP address.")
         log_ip_address()
         return False
 
@@ -54,13 +54,13 @@ def update_mam_session_cookie() -> bool:
             if mam_id_cookie:
                 # Save only the 'mam_id' cookie to the file
                 save_session_cookie_to_file([mam_id_cookie])
-                print("mam_id cookie updated successfully.")
+                print("[myAnonamouse] mam_id cookie updated successfully.")
             else:
-                print("mam_id cookie not found in the response.")
+                print("[myAnonamouse] mam_id cookie not found in the response.")
             return True
         else:
-            print(f"Failed to update session cookie: {response.status_code}")
+            print(f"[myAnonamouse] Failed to update session cookie: {response.status_code}")
             return False
     except Exception as e:
-        print(f"Error while updating session cookie: {str(e)}")
+        print(f"[myAnonamouse] Error while updating session cookie: {str(e)}")
         return False
