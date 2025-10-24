@@ -16,11 +16,11 @@ def log_ip_address():
         response = requests.get('https://api.ipify.org?format=json')
         if response.status_code == 200:
             ip_data = response.json()
-            print(f"Current IP Address: {ip_data['ip']}")
+            print(f"[utils] Current IP Address: {ip_data['ip']}")
         else:
-            print(f"Failed to get IP address: {response.status_code}")
+            print(f"[utils] Failed to get IP address: {response.status_code}")
     except Exception as e:
-        print(f"Error while logging IP address: {str(e)}")
+        print(f"[utils] Error while logging IP address: {str(e)}")
 
 
 def write_health_status(status):
