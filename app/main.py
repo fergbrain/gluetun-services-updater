@@ -17,6 +17,9 @@ from myanonamouse import update_mam_session_cookie
 
 
 def main():
+    print(f"[config] GLUETUN_URL={settings.gluetun.url}")
+    print(f"[config] QBITTORRENT_URL={settings.qbittorrent.url}")
+    print(f"[config] Run interval={int(settings.timeout)}s")
     # gluetun
     try:
         with Session() as s:
@@ -24,7 +27,7 @@ def main():
 
             # Wait for gluetun
             while not is_gluetun_ready(s):
-                print('Waiting for gluetun...')
+                print('[gluetun] Waiting for service to be ready...')
             print('Gluetun is running')
 
             # Get assigned port
@@ -41,19 +44,19 @@ def main():
             sep('qBittorrent')
 
             # Login to qBittorent
-            print('Trying to login to qBittorrent...')
+            print('[qBittorrent] Trying to login...')
             login_to_qbittorrent(s)
-            print('Logged in')
+            print('[qBittorrent] Logged in')
 
             # Update listening port
-            print('Trying to update listening port...')
+            print('[qBittorrent] Trying to update listening port...')
             update_qbittorrent_port(s, port)
-            print('Port updated')
+            print('[qBittorrent] Port updated')
 
             # Verify if port has been changed (for my sanity)
-            print('Verifying port...')
+            print('[qBittorrent] Verifying port...')
             verify_qbittorrent_port(s, port)
-            print('Port verified')
+            print('[qBittorrent] Port verified')
     except Exception as e:
         raise e
     finally:
@@ -65,10 +68,10 @@ def main():
         # Periodically check and update the session key
         session_updated = update_mam_session_cookie()
         if session_updated:
-            print("Session cookie is up-to-date.")
+            print("[myAnonamouse] Session cookie is up-to-date.")
             write_health_status("healthy")  # Mark as healthy if successful
         else:
-            print("Session cookie update failed. Please verify the session cookie.")
+            print("[myAnonamouse] Session cookie update failed. Please verify the session cookie.")
             write_health_status("unhealthy")  # Mark as unhealthy on exception
 
 
