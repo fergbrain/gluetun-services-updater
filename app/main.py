@@ -84,10 +84,17 @@ def main():
 
 
 if __name__ == '__main__':
-    try:
-        while True:
+    retry_delay = 2.0
+    max_retry_delay = 60.0
+    while True:
+        try:
             main()
-    except Exception as e:
-        print(f'{e.__class__.__name__}: {e}')
-    except KeyboardInterrupt:
-        exit()
+            retry_delay = 2.0
+        except KeyboardInterrupt:
+            exit()
+        except Exception as e:
+            print(f'{e.__class__.__name__}: {e}')
+            write_health_status("unhealthy")
+            print(f'[retry] Retrying in {retry_delay:.0f} seconds...')
+            sleep(retry_delay)
+            retry_delay = min(retry_delay * 2, max_retry_delay)
